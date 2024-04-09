@@ -1,34 +1,52 @@
 const weatherAPI = "596fd2b39a8f6c88b0462b3b20ca7ef3"; //BC-weather-dashboard
-const baseURL = "https://api.openweathermap.org/data/2.5/weather?q=";
+//const getCoordsAPI = `http://api.openweathermap.org/geo/1.0/direct?q=$${city}&appid=${API}`
+// const baseURL = "https://api.openweathermap.org/data/2.5/weather?q="; //this may be wrong
+// const baseURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API}`; 
+// const queryURL = baseURL.concat(`${city}&appid=${weatherAPI}`); //THIS MAY BE WRONG
 
-// ---------- CITY SEARCH ---------------
+// ---------- CITY SEARCH ------------
 
-TODO: 
-function handleCitySearch() {
-    //store city input to local storage aka the history
-    // const city;
-    // const state;
-    // const country;
+function handleCitySearch(event) {
+    event.preventDefault();
 
-    // const queryURL = baseURL.concat(`${city}, ${state}, ${country}&appid=${weatherAPI}`);
-
+    if (!city) {
+        alert('Must enter city name');
+    } else {
+        renderLocationHistory();
+        renderCurrWeather();
+        renderForecastCards();
+    }
 }
 
-TODO:
+function getLocationHistory() {
+    // const cities = [];
+    // if (localStorage.length !== 0) {
+    //     cities = localStorage.parse("cities");
+    // }
+    // const city = $('#city').val().trim();
+    // // alerts user until a city is entered
+
+    //     //store city input to local storage aka the history
+        
+    //     localStorage.setItem("cities", city);
+}
+
+// TODO:
 function renderLocationHistory() {
-    
+    console.log(`enter render location history`);
 }
 
 // ------------ CURRENT WEATHER -------------
 
 function renderCurrWeather() {
-
+    console.log(`enter render curr weather`);
 }
 
 // ------------ 5 DAY FORECAST -------------
 
 // creates card for each day of 5 day forecast
 function createForecastCard() {
+    console.log(`enter create forecast card`);
     // create elements
 
     // add child elements to container element
@@ -39,6 +57,7 @@ function createForecastCard() {
 
 // renders 5 day forecast
 function renderForecastCards() {
+    console.log(`enter render forecast cards`);
     // delete existing forecast cards
 
     // create loop
@@ -46,12 +65,12 @@ function renderForecastCards() {
         // add content to child elements
 
         // add '.card' class to container
-
 }
 
 // --------------- ON LOAD ---------------
 
 $(document).ready(function () {
+        console.log(`enter document ready function`);
 
         // render location history
         renderLocationHistory();
