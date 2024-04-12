@@ -13,7 +13,6 @@ function handleCitySearch(event) {
 
     const city = $('#city').val().trim();
     $('#city').val('');
-    console.log(city);
 
     if (!city) {
         alert('Must enter city name');
@@ -29,7 +28,6 @@ function getLocationHistory() {
     let cities = [];
 
     if (localStorage.length !== 0) {
-        console.log(`local storage has length`);
         cities = JSON.parse(localStorage.getItem("cityHistory"));
     }
     return cities;
@@ -37,12 +35,12 @@ function getLocationHistory() {
 
 function setLocationHistory(city) {
     console.log(`enter set location history`);
-    let currCities = getLocationHistory(); // is an array
+    let currCities = getLocationHistory();
+
     if (localStorage.length !== 0) {
-        console.log(`local storage exists`);
         currCities = JSON.parse(localStorage.getItem('cityHistory'));
     } else {
-        console.log(`localstorage does not exist`);
+
         currCities.push(city);
         
         localStorage.setItem("cityHistory", JSON.stringify(currCities));
@@ -83,7 +81,6 @@ async function renderCurrWeather(lat, lon) {
     try {
         const response = await fetch(currWeatherUrl);
         result = await response.json();
-        // console.log(result);
     } catch (error) {
         console.error(error); 
     }
@@ -102,46 +99,79 @@ async function renderCurrWeather(lat, lon) {
     $('#city-day').text(`${city} ${date}`);
     $('#currIcon').attr('src', iconUrl);
     $('#currIcon').attr('alt', iconAlt);
-    $('#temp').text(`${temp}\u00B0F`);
-    $('#wind').text(`${wind.speed} MPH`);
-    $('#humidity').text(`${humidity}%`);
+    $('#temp').text(`Temp: ${temp}\u00B0F`);
+    $('#wind').text(`Wind: ${wind.speed} MPH`);
+    $('#humidity').text(`Humidity: ${humidity}%`);
 }
 
 // ------------ 5 DAY FORECAST -------------
 
 // creates card for each day of 5 day forecast
-async function createForecastCard(day) {
+function createForecastCard(day) {
     console.log(`enter create forecast card`);
 
     // create elements
-    
-    // add content to child elements
+    const dayEl = document.createElement('section');
+    const dateEl = document.createElement('h3');
+    const iconEl = document.createElement('img');
+    const tempEl = document.createElement('p');
+    const windEl = document.createElement('p');
+    const humidityEl = document.createElement('p');
+
+    // set icon content
+    const iconCode = day.weather[0].icon;
+    const iconAlt = day.weather[0].description;
+    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    iconEl.setAttribute('src', iconUrl);
+    iconEl.setAttribute('alt', iconAlt);
+
+    // set text of elements
+    dateEl.textContent = day.dt_txt.split(' ')[0];
+    tempEl.textContent = `Temp: ${day.main.temp}\u00B0F`;
+    windEl.textContent = `Wind: ${day.wind.speed} MPH`;
+    humidityEl.textContent = `Humidity: ${day.main.humidity}%`;
 
     // add child elements to container element
-
+    dayEl.append(dateEl);
+    dayEl.append(iconEl);
+    dayEl.append(tempEl);
+    dayEl.append(windEl);
+    dayEl.append(humidityEl);
+    
+    return dayEl;
 }
 
 // renders 5 day forecast
 async function renderForecastCards(lat, lon) {
     console.log(`enter render forecast cards`);
-    
+
     $('#five-day').empty(); // clears forecast container
 
-    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&cnt=5&appid=${weatherAPIKey}`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherAPIKey}`;
 
     // // get 5 day forecast from api
     try {
         const response = await fetch(forecastUrl);
         result = await response.json();
-        console.log(result);
     } catch (error) {
         console.error(error); 
     }
-    const forecast = result.list;
-    console.log(forecast);
+
+    const forecastHourly = result.list;
+    const forecastDaily = [];
+
+    // pushes only weather at 12pm to array
+    forecastHourly.forEach(timeObj => {
+        const timeArr = timeObj.dt_txt.split(' ');
+        const time = timeArr[1];
+        if (time === "12:00:00") {
+            forecastDaily.push(timeObj);
+        }
+    });
 
     // create elements for each day
-    forecast.forEach(day => {
+    forecastDaily.forEach(day => {
+
         const dayEl = createForecastCard(day);
         
         // add container to the DOM
@@ -186,7 +216,6 @@ $(document).ready(function () {
     const cities = getLocationHistory();
     if (cities > 0) {
         renderWeather(cities[0]);
-        console.log(`enter if`);
     }
 
     // add event listener to button
