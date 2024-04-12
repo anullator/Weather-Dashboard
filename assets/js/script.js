@@ -114,16 +114,18 @@ async function createForecastCard(day) {
     console.log(`enter create forecast card`);
 
     // create elements
+    
+    // add content to child elements
 
     // add child elements to container element
-
-    // add container to the DOM
 
 }
 
 // renders 5 day forecast
 async function renderForecastCards(lat, lon) {
     console.log(`enter render forecast cards`);
+    
+    $('#five-day').empty(); // clears forecast container
 
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&cnt=5&appid=${weatherAPIKey}`;
 
@@ -141,23 +143,12 @@ async function renderForecastCards(lat, lon) {
     // create elements for each day
     forecast.forEach(day => {
         const dayEl = createForecastCard(day);
+        
+        // add container to the DOM
         $('#five-day').append(dayEl);
         
     });
     $('#five-day > section').addClass('card'); // adds same cass to all forecast cards
-
-
-    // add child elements to container element
-
-    // add container to the DOM
-
-    // delete existing forecast cards
-
-    // create loop
-
-        // add content to child elements
-
-        // add '.card' class to container
 }
 
 // -------- RENDER ALL WEATHER -----------
