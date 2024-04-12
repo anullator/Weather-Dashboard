@@ -74,8 +74,85 @@ function renderLocationHistory() {
 
 // ------------ CURRENT WEATHER -------------
 
-async function renderCurrWeather(city) {
+async function renderCurrWeather(lat, lon) {
     console.log(`enter render curr weather`);
+
+
+    // TODO: add curr weather api call 
+    const currWeatherUrl = `${baseCurrWeather}lat=${lat}&lon=${lon}&appid=${weatherAPIKey}&units=imperial`;
+
+    try {
+        const response = await fetch(currWeatherUrl);
+        // console.log(response);
+        result = await response.json();
+        console.log(result);
+        
+        // result = JSON.parse(result);
+        // console.log(typeof result);
+    } catch (error) {
+        console.error(error); 
+    }
+
+    //get current weather data from api response
+    const city = result.name;
+    const date = dayjs().format('ddd, MMM DD');
+    console.log(date);
+    const icon = result.weather[0].icon;
+    const iconAlt = result.weather[0].description;
+    const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+    const temp = result.main.temp;
+    const wind = result.wind;
+    const humidity = result.main.humidity;
+
+    // renders the current weather on the client
+    $('#city-day').text(`${city} ${date}`);
+    $('#currIcon').attr('src', iconUrl);
+    $('#currIcon').attr('alt', iconAlt);
+    console.log($('#currIcon'));
+    $('#temp').text(`${temp}\u00B0F`);
+    $('#wind').text(`${wind.speed} MPH`);
+    $('#humidity').text(`${humidity}%`);
+}
+
+// ------------ 5 DAY FORECAST -------------
+
+// creates card for each day of 5 day forecast
+// function createForecastCards(lat, lon) {
+//     console.log(`enter create forecast card`);
+//     const forecastURL = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherAPIKey}`;
+//     // create elements
+
+//     // add child elements to container element
+
+//     // add container to the DOM
+
+// }
+
+// renders 5 day forecast
+async function renderForecastCards(lat, lon) {
+    console.log(`enter render forecast cards`);
+
+    console.log(`enter create forecast card`);
+    const forecastURL = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherAPIKey}`;
+    // create elements
+
+    // add child elements to container element
+
+    // add container to the DOM
+
+    // delete existing forecast cards
+
+    // create loop
+
+        // add content to child elements
+
+        // add '.card' class to container
+}
+
+// -------- RENDER ALL WEATHER -----------
+
+async function renderWeather(city) {
+    console.log(`enter render weather`);
     const url = `${baseCoords}${city}&appid=${weatherAPIKey}`;
     let result;
 
@@ -90,57 +167,8 @@ async function renderCurrWeather(city) {
     const lat = result[0].lat;
     const lon = result[0].lon;
 
-    // TODO: add curr weather api call 
-    const currWeatherUrl = `${baseCurrWeather}lat=${lat}&lon=${lon}&appid=${weatherAPIKey}`;
-
-    try {
-        const response = await fetch(currWeatherUrl);
-        // console.log(response);
-        result = await response.json();
-        console.log(result);
-        
-        // result = JSON.parse(result);
-        // console.log(typeof result);
-    } catch (error) {
-        console.error(error); 
-    }
-
-    //TODO: get data for the current weather using the "weather" key and values
-
-}
-
-// ------------ 5 DAY FORECAST -------------
-
-// creates card for each day of 5 day forecast
-function createForecastCard() {
-    console.log(`enter create forecast card`);
-    // create elements
-
-    // add child elements to container element
-
-    // add container to the DOM
-
-}
-
-// renders 5 day forecast
-function renderForecastCards() {
-    console.log(`enter render forecast cards`);
-    // delete existing forecast cards
-
-    // create loop
-
-        // add content to child elements
-
-        // add '.card' class to container
-}
-
-// -------- RENDER ALL WEATHER -----------
-
-function renderWeather(city) {
-    console.log(`enter render weather`);
-
-    renderCurrWeather(city);
-    renderForecastCards(city);
+    renderCurrWeather(lat, lon);
+    renderForecastCards(lat, lon);
 
 }
 
