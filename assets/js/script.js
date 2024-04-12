@@ -77,18 +77,13 @@ function renderLocationHistory() {
 async function renderCurrWeather(lat, lon) {
     console.log(`enter render curr weather`);
 
-
-    // TODO: add curr weather api call 
+    //curr weather api call 
     const currWeatherUrl = `${baseCurrWeather}lat=${lat}&lon=${lon}&appid=${weatherAPIKey}&units=imperial`;
 
     try {
         const response = await fetch(currWeatherUrl);
-        // console.log(response);
         result = await response.json();
-        console.log(result);
-        
-        // result = JSON.parse(result);
-        // console.log(typeof result);
+        // console.log(result);
     } catch (error) {
         console.error(error); 
     }
@@ -96,7 +91,6 @@ async function renderCurrWeather(lat, lon) {
     //get current weather data from api response
     const city = result.name;
     const date = dayjs().format('ddd, MMM DD');
-    console.log(date);
     const icon = result.weather[0].icon;
     const iconAlt = result.weather[0].description;
     const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
@@ -108,7 +102,6 @@ async function renderCurrWeather(lat, lon) {
     $('#city-day').text(`${city} ${date}`);
     $('#currIcon').attr('src', iconUrl);
     $('#currIcon').attr('alt', iconAlt);
-    console.log($('#currIcon'));
     $('#temp').text(`${temp}\u00B0F`);
     $('#wind').text(`${wind.speed} MPH`);
     $('#humidity').text(`${humidity}%`);
@@ -117,24 +110,42 @@ async function renderCurrWeather(lat, lon) {
 // ------------ 5 DAY FORECAST -------------
 
 // creates card for each day of 5 day forecast
-// function createForecastCards(lat, lon) {
-//     console.log(`enter create forecast card`);
-//     const forecastURL = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherAPIKey}`;
-//     // create elements
+async function createForecastCard(day) {
+    console.log(`enter create forecast card`);
 
-//     // add child elements to container element
+    // create elements
 
-//     // add container to the DOM
+    // add child elements to container element
 
-// }
+    // add container to the DOM
+
+}
 
 // renders 5 day forecast
 async function renderForecastCards(lat, lon) {
     console.log(`enter render forecast cards`);
 
-    console.log(`enter create forecast card`);
-    const forecastURL = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherAPIKey}`;
-    // create elements
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&cnt=5&appid=${weatherAPIKey}`;
+
+    // // get 5 day forecast from api
+    try {
+        const response = await fetch(forecastUrl);
+        result = await response.json();
+        console.log(result);
+    } catch (error) {
+        console.error(error); 
+    }
+    const forecast = result.list;
+    console.log(forecast);
+
+    // create elements for each day
+    forecast.forEach(day => {
+        const dayEl = createForecastCard(day);
+        $('#five-day').append(dayEl);
+        
+    });
+    $('#five-day > section').addClass('card'); // adds same cass to all forecast cards
+
 
     // add child elements to container element
 
