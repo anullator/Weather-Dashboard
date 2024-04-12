@@ -16,36 +16,46 @@
 
     <body>
 <!-- HEADER -->
-        <header>
-            <h1>Weather Dashboard</h1>
+        <header class="text-center">
+            <h1 class="pb-4">Weather Dashboard</h1>
         </header>
 
-        <main>
+        <main class="d-flex">
 <!-- CITY SEARCH AND RESULTS SECTION -->
-            <section id="search">
-                <!-- Search box -->
-                <form action="#">
-                    <h2>Search for a City:</h2>
-                    <input type="text" id="city">
-                    <input type="submit" value="Search">
-                </form>
-            </section>
 
-            <!-- Search history -->
-            <section id="history"></section>
+            <!--for first column search bar and history -->
+            <div id="search-bar" class="container p-4 col-lg-3 d-flex flex-column border border-primary-subtle rounded"> 
+                <section id="search">
+                    <!-- Search box -->
+                    <form class="d-flex flex-column align-items-center" action="#">
+                        <h2>Search for a City:</h2>
+                        <input type="text" id="city">
+                        <input class="m-2" type="submit" value="Search">
+                    </form>
+                </section>
+    
+                <!-- Search history -->
+                <section class="d-flex flex-column align-items-center" id="history"></section>
+            </div>
 
-<!-- CURRENT WEATHER SECTION-->
-            <section id="current">
-                <h2 id="city-day"></h2> <!-- city name -->
-                <img id="currIcon" src="" alt="">
-                <p id="temp"></p> <!-- temperature -->
-                <p id="wind"></p> <!-- wind -->
-                <p id="humidity"></p> <!-- humidity -->
-            </section>
+            <!-- ALL WEATHER -->
+            <div class="container col-lg-9">
+                <!-- CURRENT WEATHER SECTION-->
+                <section class="mb-3 p-4 border border-primary-subtle rounded" id="current">
+                    <h2 id="city-day"></h2> <!-- city name -->
+                    <img id="currIcon" src="" alt="">
+                    <p id="temp"></p> <!-- temperature -->
+                    <p id="wind"></p> <!-- wind -->
+                    <p id="humidity"></p> <!-- humidity -->
+                </section>
 
-<!-- 5 DAY FORECAST SECTION -->
-            <h2>5-Day Forecast:</h2>
-            <section id="five-day"></section>
+                <!-- 5 DAY FORECAST SECTION -->
+                <section class="p-4 border border-primary-subtle rounded" id="forecast">
+                    <h2>5-Day Forecast:</h2>
+                    <section class="d-flex flex-row flex-wrap justify-content-center" id="five-day"></section>
+                </section>
+            </div>
+
         </main>
 
 <!-- SCRIPTS -->

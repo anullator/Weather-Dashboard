@@ -67,6 +67,7 @@ function renderLocationHistory() {
     })
 
     $('#history > button').on('click', handleHistorySearch);
+    $('#history > button').addClass('my-2 ml-3 px-5 py-2 rounded');
 }
 
 function handleHistorySearch(event) {
@@ -185,7 +186,7 @@ async function renderForecastCards(lat, lon) {
         $('#five-day').append(dayEl);
         
     });
-    $('#five-day > section').addClass('card'); // adds same cass to all forecast cards
+    $('#five-day > section').addClass('card m-1 p-3 d-flex flex-column align-items-center'); // adds same cass to all forecast cards
 }
 
 // -------- RENDER ALL WEATHER -----------
