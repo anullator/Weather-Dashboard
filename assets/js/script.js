@@ -24,7 +24,7 @@ function handleCitySearch(event) {
 }
 
 function getLocationHistory() {
-    console.log(`enter get location history`);
+
     let cities = [];
 
     if (localStorage.length !== 0) {
@@ -34,7 +34,7 @@ function getLocationHistory() {
 }
 
 function setLocationHistory(city) {
-    console.log(`enter set location history`);
+
     let currCities = getLocationHistory();
 
     if (localStorage.length !== 0) {
@@ -54,9 +54,8 @@ function setLocationHistory(city) {
 }
 
 function renderLocationHistory() {
-    console.log(`enter render location history`);
     
-    $('#history').empty();
+    $('#history').empty(); // clears history container
 
     const history = getLocationHistory();
     history.forEach(city => {
@@ -67,13 +66,23 @@ function renderLocationHistory() {
 
     })
 
-    $('#history > button').on('click', renderWeather);
+    $('#history > button').on('click', handleHistorySearch);
+}
+
+function handleHistorySearch(event) {
+    event.preventDefault();
+
+    // get name of city from button
+    const city = jQuery(this).text().trim();
+
+    setLocationHistory(city);
+    renderLocationHistory();
+    renderWeather(city);
 }
 
 // ------------ CURRENT WEATHER -------------
 
 async function renderCurrWeather(lat, lon) {
-    console.log(`enter render curr weather`);
 
     //curr weather api call 
     const currWeatherUrl = `${baseCurrWeather}lat=${lat}&lon=${lon}&appid=${weatherAPIKey}&units=imperial`;
@@ -96,7 +105,7 @@ async function renderCurrWeather(lat, lon) {
     const humidity = result.main.humidity;
 
     // renders the current weather on the client
-    $('#city-day').text(`${city} ${date}`);
+    $('#city-day').text(`${city} | ${date}`);
     $('#currIcon').attr('src', iconUrl);
     $('#currIcon').attr('alt', iconAlt);
     $('#temp').text(`Temp: ${temp}\u00B0F`);
@@ -108,7 +117,6 @@ async function renderCurrWeather(lat, lon) {
 
 // creates card for each day of 5 day forecast
 function createForecastCard(day) {
-    console.log(`enter create forecast card`);
 
     // create elements
     const dayEl = document.createElement('section');
@@ -143,7 +151,6 @@ function createForecastCard(day) {
 
 // renders 5 day forecast
 async function renderForecastCards(lat, lon) {
-    console.log(`enter render forecast cards`);
 
     $('#five-day').empty(); // clears forecast container
 
@@ -184,7 +191,7 @@ async function renderForecastCards(lat, lon) {
 // -------- RENDER ALL WEATHER -----------
 
 async function renderWeather(city) {
-    console.log(`enter render weather`);
+
     const url = `${baseCoords}${city}&appid=${weatherAPIKey}`;
     let result;
 
@@ -207,14 +214,14 @@ async function renderWeather(city) {
 // --------------- ON LOAD ---------------
 
 $(document).ready(function () {
-    console.log(`enter document ready function`);
 
     // render location history
     renderLocationHistory();
 
     // load weather
     const cities = getLocationHistory();
-    if (cities > 0) {
+
+    if (cities.length > 0) {
         renderWeather(cities[0]);
     }
 
